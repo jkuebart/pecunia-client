@@ -15,7 +15,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
 # 02110-1301  USA
 
-name: Build Pecunia
+name: Verify pull request
 
 on:
   pull_request:
@@ -36,30 +36,10 @@ jobs:
           describe=$(git describe --tags)
           printf 'MARKETING_VERSION=%s\n' "${describe#Release-}" >>$GITHUB_ENV
 
-      # Without a Developer ID, we cannot access the keychain. Remove the
-      # entitlement to avoid signing.
-      - name: Remove Keychain entitlement
-        run: plutil -remove keychain-access-groups Pecunia.entitlements
-
-      - name: Build the app
-        run: |
-          xcodebuild \
-              -configuration Deployment \
-              -scheme Pecunia \
-              -workspace Pecunia.xcworkspace \
-              CODE_SIGN_IDENTITY=- \
-              MARKETING_VERSION="$MARKETING_VERSION" \
-              SYMROOT="$PWD/Build/Products"
-
-      # Uploading the files directly doesn't produce a working app. Create
-      # a .tar first.
-      - name: Package the app
-        run: |
-          pax \
-              -f Pecunia.tar \
-              -s :Build/Products/Deployment/:: \
-              -w \
-              Build/Products/Deployment/Pecunia.app
+      - name: Build Pecunia
+        uses: ./.github/actions/build
+        with:
+          version: ${{ env.MARKETING_VERSION }}
 
       - id: upload-artifact
         name: Upload artifact
