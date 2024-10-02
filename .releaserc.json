@@ -1,0 +1,28 @@
+{
+    "branches": [
+        "master"
+    ],
+    "plugins": [
+        "@semantic-release/commit-analyzer",
+        "@semantic-release/release-notes-generator",
+        [
+            "@semantic-release/exec",
+            {
+                "verifyReleaseCmd": "printf 'MARKETING_VERSION=${nextRelease.version}\n' >>$GITHUB_ENV"
+            }
+        ],
+        [
+            "@semantic-release/github",
+            {
+                "assets": [
+                    {
+                        "label": "Pecunia ${nextRelease.version}",
+                        "name": "Pecunia-${nextRelease.version}.tar.Z",
+                        "path": "Pecunia.tar.Z"
+                    }
+                ]
+            }
+        ]
+    ],
+    "tagFormat": "Release-${version}"
+}
