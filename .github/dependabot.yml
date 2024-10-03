@@ -1,0 +1,9 @@
+updates:
+  - package-ecosystem: github-actions
+      directory: /
+      groups:
+        version-updates:
+      schedule:
+        interval: weekly
+
+version: 2
