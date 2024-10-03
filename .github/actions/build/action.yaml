@@ -1,0 +1,56 @@
+# Copyright (c) 2024, Pecunia Project. All rights reserved.
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation; version 2 of the
+# License.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+# 02110-1301  USA
+
+name: Build Pecunia
+
+inputs:
+  version:
+    description: The version to be built.
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # Without a Developer ID, we cannot access the keychain. Remove the
+    # entitlement to avoid signing.
+    - name: Remove Keychain entitlement
+      run: plutil -remove keychain-access-groups Pecunia.entitlements
+      shell: sh
+
+    - name: Build the app
+      env:
+        MARKETING_VERSION: ${{ inputs.version }}
+      run: |
+        xcodebuild \
+            -configuration Deployment \
+            -scheme Pecunia \
+            -workspace Pecunia.xcworkspace \
+            CODE_SIGN_IDENTITY=- \
+            MARKETING_VERSION="$MARKETING_VERSION" \
+            SYMROOT="$PWD/Build/Products"
+      shell: sh
+
+    # Uploading the files directly doesn't produce a working app. Create
+    # a .tar first.
+    - name: Package the app
+      run: |
+        pax \
+            -f Pecunia.tar \
+            -s :Build/Products/Deployment/:: \
+            -w \
+            Build/Products/Deployment/Pecunia.app
+      shell: sh
