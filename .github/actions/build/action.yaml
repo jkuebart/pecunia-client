@@ -37,11 +37,11 @@ runs:
       run: |
         xcodebuild \
             -configuration Deployment \
+            -derivedDataPath "$PWD/DerivedData" \
             -scheme Pecunia \
             -workspace Pecunia.xcworkspace \
             CODE_SIGN_IDENTITY=- \
-            MARKETING_VERSION="$MARKETING_VERSION" \
-            SYMROOT="$PWD/Build/Products"
+            MARKETING_VERSION="$MARKETING_VERSION"
       shell: sh
 
     # Uploading the files directly doesn't produce a working app. Create
@@ -50,7 +50,7 @@ runs:
       run: |
         pax \
             -f Pecunia.tar \
-            -s :Build/Products/Deployment/:: \
+            -s :DerivedData/Build/Products/Deployment/:: \
             -w \
-            Build/Products/Deployment/Pecunia.app
+            DerivedData/Build/Products/Deployment/Pecunia.app
       shell: sh

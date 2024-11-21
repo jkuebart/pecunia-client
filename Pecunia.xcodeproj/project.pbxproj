@@ -3186,7 +3186,7 @@
 				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/Build/Products/Debug",
+					"$(SYMROOT)/Debug",
 					"$(SRCROOT)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
@@ -3259,7 +3259,7 @@
 				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/Build/Products/Debug",
+					"$(SYMROOT)/Debug",
 					"$(SRCROOT)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
@@ -3319,7 +3319,7 @@
 				DEVELOPMENT_TEAM = JY3Q678PYA;
 				ENABLE_HARDENED_RUNTIME = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)/Build/Products/Debug",
+					"$(SYMROOT)/Debug",
 					"$(SRCROOT)/Frameworks",
 				);
 				GCC_CHAR_IS_UNSIGNED_CHAR = YES;
